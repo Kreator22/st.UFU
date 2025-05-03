@@ -53,8 +53,43 @@ namespace Lab_02_02
             Декабрь
         }
     }
+
+    /// <summary>
+    /// Единицы длины пронумерованы следующим образом:<br/>
+    /// 1 — дециметр, 2 — километр, 3 — метр, 4 — миллиметр, 5 — сантиметр.<br/>
+    /// Дан номер единицы длины (целое число в диапазоне 1–5) и длина отрезка в этих единицах
+    /// (вещественное положительное число). <br/>Найти длину отрезка в метрах.
+    /// </summary>
     public static class Lab_02_02_02
     {
-
+        /// <summary>
+        /// Перевод длины отрезка в метры
+        /// </summary>
+        /// <param name="prefix">Единица измерения <br/>
+        /// 1 — дециметр, 2 — километр, 3 — метр, 4 — миллиметр, 5 — сантиметр</param>
+        /// <param name="segment">Длина в единицах измерения</param>
+        /// <returns>Длина в метрах</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static double Meters(int prefix, double segment)
+        {
+            Lengths length = (Lengths)prefix;
+            return (length) switch
+            {
+                (Lengths.Дециметр) =>   segment / 10,
+                (Lengths.Километр) =>   segment * 1000,
+                (Lengths.Метр) =>       segment,
+                (Lengths.Миллиметр) =>  segment / 1000,
+                (Lengths.Сантиметр) =>  segment / 100,
+                (_) => throw new NotImplementedException()
+            };
+        }
+        public enum Lengths
+        {
+            Дециметр = 1,
+            Километр, 
+            Метр, 
+            Миллиметр,
+            Сантиметр
+        }
     }
 }
