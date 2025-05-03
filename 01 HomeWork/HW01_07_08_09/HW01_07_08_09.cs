@@ -14,8 +14,12 @@ public static class HW01_07_08_09
 {
     public static bool IS_B_InTheMiddle(int a, int b, int c) => 
         (a < b && b < c) || (a > b && b > c);
-    public static bool AreOdd(int a, int b) => 
-        a % 2 == 1 && b % 2 == 1;
-    public static bool AreSameParity(int a, int b) => 
-        a % 2 == b % 2;
+
+    public static bool AreOdd(int a, int b) =>
+        //a % 2 == 1 && b % 2 == 1;
+        int.IsOddInteger(a) && int.IsOddInteger(b);
+
+    public static bool AreSameParity(int a, int b) =>
+        //a % 2 == b % 2;
+        int.IsEvenInteger(a) == int.IsEvenInteger(b);
 }
