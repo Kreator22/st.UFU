@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using l21 = Lab_02_01.Lab_02_01;
+using l221 = Lab_02_02.Lab_02_02_01;
+using l222 = Lab_02_02.Lab_02_02_02;
 
 namespace Lab_02_Tests
 {
@@ -147,8 +149,41 @@ namespace Lab_02_Tests
         public void Lab_02_01_08()
         {
             int actual;
+
             actual = l21.Lab_02_01_08(1, 2, 3);
             Assert.AreEqual(5, actual);
+        }
+    }
+    [TestClass]
+    public sealed class Lab_02_02_Tests
+    {
+        [TestMethod]
+        public void Lab_02_02_01()
+        {
+            int actual;
+
+            actual = l221.Days(l221.Months.Январь);
+            Assert.AreEqual(31, actual);
+        }
+        [TestMethod]
+        public void Lab_02_02_02()
+        {
+            double actual;
+
+            actual = l222.Meters(1, 10);
+            Assert.AreEqual(1, actual);
+
+            actual = l222.Meters(2, 1.5);
+            Assert.AreEqual(1500, actual);
+
+            actual = l222.Meters(3, 666);
+            Assert.AreEqual(666, actual);
+
+            actual = l222.Meters(4, 1100);
+            Assert.AreEqual(1.1, actual);
+
+            actual = l222.Meters(5, 150);
+            Assert.AreEqual(1.5, actual);
         }
     }
 }

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lab_02_01\Lab_02_01.csproj" />
+    <ProjectReference Include="..\Lab_02_02\Lab_02_02.csproj" />
   </ItemGroup>
 
   <ItemGroup>
