@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\01.HW.07+08+09\HW01_07_08_09.csproj" />
     <ProjectReference Include="..\HW01_07_08_09\HW01_07_08_09.csproj" />
+    <ProjectReference Include="..\HW01_10\HW01_10.csproj" />
   </ItemGroup>
 
   <ItemGroup>
