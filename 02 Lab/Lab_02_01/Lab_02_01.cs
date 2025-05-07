@@ -1,5 +1,5 @@
 ﻿//Лабораторная работа #2, блок задач 1 - условный оператор
-//https://edu.mmcs.sfedu.ru/mod/assign/view.php?id=18850
+//https://edu.mmcs.sfedu.ru/mod/assign/view.php?id=18888
 
 //1. Дано целое число. Если оно является положительным, то вычесть из него 1.
 
