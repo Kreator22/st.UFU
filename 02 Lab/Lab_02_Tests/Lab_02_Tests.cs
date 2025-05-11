@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 
 
@@ -19,7 +20,7 @@ namespace Lab_02_Tests
     [TestClass]
     public sealed class Lab_02_01_Tests
     {
-        
+
         [TestMethod]
         public void Lab_02_01_01()
         {
@@ -216,7 +217,7 @@ namespace Lab_02_Tests
 
             (IEactual, actual) = l23.Lab_02_03_01(1, 5);
             IEnumerable<int> IEExpected = [2, 3, 4];
-            
+
             equality = Enumerable.SequenceEqual(IEactual, IEExpected);
             Assert.AreEqual((true, 3), (equality, actual));
 
@@ -322,5 +323,201 @@ namespace Lab_02_Tests
             expected = Math.Pow(Math.E, 10);
             Assert.AreEqual(expected, actual, delta);
         }
+
+        [TestMethod]
+        public void Lab_02_03_05()
+        {
+            decimal actual;
+
+            actual = l23.Lab_02_03_05(10, 1);
+            Assert.AreEqual(0, actual);
+
+            actual = l23.Lab_02_03_05(10, 3);
+            Assert.AreEqual(1, actual);
+
+            actual = l23.Lab_02_03_05(10, 1.1m);
+            Assert.AreEqual(0.1m, actual);
+        }
+
+        [TestMethod]
+        public void Lab_02_03_06()
+        {
+            int actual;
+
+            actual = l23.Lab_02_03_06_02(1);
+            Assert.AreEqual(1, actual);
+
+            actual = l23.Lab_02_03_06_02(2);
+            Assert.AreEqual(1, actual);
+
+            actual = l23.Lab_02_03_06_02(3);
+            Assert.AreEqual(2, actual);
+
+            actual = l23.Lab_02_03_06_02(4);
+            Assert.AreEqual(3, actual);
+
+            actual = l23.Lab_02_03_06_02(5);
+            Assert.AreEqual(5, actual);
+
+            actual = l23.Lab_02_03_06_02(6);
+            Assert.AreEqual(8, actual);
+
+            Console.WriteLine();
+            Console.WriteLine("Рекурсивное решение");
+            actual = PerformanceTests<int, int>(l23.Lab_02_03_06_01, 40);
+
+            Console.WriteLine("Решение без рекурсии");
+            actual = PerformanceTests<int, int>(l23.Lab_02_03_06_02, 40);
+            Assert.AreEqual(102334155, actual);
+        }
+
+
+        public K PerformanceTests<T, K>(Func<T, K> method, T parametr)
+        {
+            long before = GC.GetTotalMemory(false);
+            Stopwatch sw = Stopwatch.StartNew(); //запускаем таймер
+
+            K result = method(parametr);
+
+            sw.Stop(); //останавливаем таймер
+            long after = GC.GetTotalMemory(false);
+
+            Console.WriteLine($"Время выполнения операции { sw.ElapsedTicks} тактов");
+            Console.WriteLine($"Время выполнения операции {sw.ElapsedMilliseconds} миллисекунд");
+
+            string postfix = "b";
+            long divider = 1;
+            long consumedInBytes = (after - before);
+
+            const long Kb = 1024;
+            const long Mb = 1024 * 1024;
+
+            switch (consumedInBytes)
+            {
+                case > Kb and < Mb:
+                    divider = Kb;
+                    postfix = " Kb";
+                    break;
+                case > Mb:
+                    divider = Mb;
+                    postfix = " Mb";
+                    break;
+            }
+
+            Console.WriteLine($"Затрачено памяти {consumedInBytes / divider} {postfix}");
+            Console.WriteLine();
+            return result;
+        }
+
+        [TestMethod]
+        public void Lab_02_03_07()
+        {
+            int actual_quotient;
+            int actual_remainder;
+            int expected_quotient;
+            int expected_remainder;
+
+            (actual_quotient, actual_remainder) = l23.Lab_02_03_07(10, 3);
+            (expected_quotient, expected_remainder) = int.DivRem(10, 3);
+
+            Assert.AreEqual(
+                (expected_quotient, expected_remainder), 
+                (actual_quotient, actual_remainder)
+                );
+        }
+
+        [TestMethod]
+        public void Lab_02_03_08()
+        {
+            bool actual;
+
+            actual = l23.Lab_02_03_08(27);
+            Assert.AreEqual(true, actual);
+
+            actual = l23.Lab_02_03_08(28);
+            Assert.AreEqual(false, actual);
+        }
+
+        [TestMethod]
+        public void Lab_02_03_09()
+        {
+            int actual_quantity;
+            int actual_sum;
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(5);
+            Assert.AreEqual((1, 5), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(125);
+            Assert.AreEqual((3, 8), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(999);
+            Assert.AreEqual((3, 27), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(1111);
+            Assert.AreEqual((4, 4), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(0);
+            Assert.AreEqual((1, 0), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(-5);
+            Assert.AreEqual((1, 5), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(-125);
+            Assert.AreEqual((3, 8), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(-999);
+            Assert.AreEqual((3, 27), (actual_quantity, actual_sum));
+
+            (actual_quantity, actual_sum) = l23.Lab_02_03_09_01(-1111);
+            Assert.AreEqual((4, 4), (actual_quantity, actual_sum));
+
+            Console.WriteLine("Решение через деление на 10");
+            PerformanceTests<int, (int, int)>(l23.Lab_02_03_09_01, int.MaxValue);
+
+            Console.WriteLine("Решение через преобразование в строку");
+            PerformanceTests<int, (int, int)>(l23.Lab_02_03_09_02, int.MaxValue);
+        }
+
+        [TestMethod]
+        public void Lab_02_03_10()
+        {
+            byte[] b_actual;
+            int actual;
+
+            b_actual = l23.Lab_02_03_10(0);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(0, actual);
+
+            b_actual = l23.Lab_02_03_10(1);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(1, actual);
+
+            b_actual = l23.Lab_02_03_10(255);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(255, actual);
+
+            b_actual = l23.Lab_02_03_10(256);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(256, actual);
+
+            b_actual = l23.Lab_02_03_10(257);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(257, actual);
+
+            b_actual = l23.Lab_02_03_10(int.MaxValue);
+            actual = Bytes_To_Int(b_actual);
+            Assert.AreEqual(int.MaxValue, actual);
+
+            int Bytes_To_Int(byte[] bytes)
+            {
+                int result = 0;
+
+                for (int i = 0; i < bytes.Length; i++)
+                    result += bytes[i] << i * 8;
+
+                return result;
+            }
+        }
     }
 }
+
