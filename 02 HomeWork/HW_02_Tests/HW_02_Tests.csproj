@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\PerfomanceTests\PerfomanceTests.csproj" />
     <ProjectReference Include="..\HW_02_01\HW_02.csproj" />
   </ItemGroup>
 
