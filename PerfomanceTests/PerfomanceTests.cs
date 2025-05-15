@@ -4,6 +4,12 @@ namespace PerfomanceTests
 {
     public static class PerfomanceTests
     {
+        /// <summary>
+        /// Делегат, тип, экземпляры которого будут хранить ссылки на методы сортировки.
+        /// </summary>
+        public delegate void SortMethod<T>(ref T[] arr) 
+            where T : IComparable;
+
         public static K Test<T, K>(Func<T, K> method, T parametr)
         {
             Tester tester = new();
@@ -41,6 +47,29 @@ namespace PerfomanceTests
             tester.PrintResult();
 
             return result;
+        }
+
+        public static void Test<T>(Action<T> method, T parametr)
+        {
+            Tester tester = new();
+            tester.Start();
+
+            method(parametr);
+
+            tester.Stop();
+            tester.PrintResult();
+        }
+
+        public static void Test<T>(SortMethod<T> method, T[] parametr) 
+            where T : IComparable
+        {
+            Tester tester = new();
+            tester.Start();
+
+            method(ref parametr);
+
+            tester.Stop();
+            tester.PrintResult();
         }
     }
 
