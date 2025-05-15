@@ -101,6 +101,7 @@ namespace _03_Lab
             {
                 double k = r.NextDouble() * (max - min);
                 k += min >= 0 ? -min : min;
+                arr[i] = k;
             }
 
             return arr;
