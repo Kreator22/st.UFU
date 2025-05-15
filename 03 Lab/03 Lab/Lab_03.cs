@@ -82,13 +82,9 @@ namespace _03_Lab
             int[] arr = new int[size];
             Random r = new();
 
-            Array.ForEach(arr, i =>
-            {
-                i = r.Next(min, max);
-                Console.Write($"{i}, ");
-            });
+            for (int i = 0; i < size; i++)
+                arr[i] = r.Next(min, max);
 
-            Console.WriteLine();
             return arr;
         }
 
