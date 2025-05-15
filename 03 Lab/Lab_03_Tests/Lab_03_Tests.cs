@@ -15,16 +15,27 @@ namespace Lab_03_Tests
         [TestMethod]
         public void RandomIntArray()
         {
-            lb3.RandomIntArray();
-            lb3.RandomIntArray(5, -5, 5);
+            int[] actual;
+
+            actual = lb3.RandomIntArray();
+            lb3.PrintArray(actual);
+
+            actual = lb3.RandomIntArray(5, -5, 5);
+            lb3.PrintArray(actual);
         }
 
         [TestMethod]
         public void RandomDoubleArray()
         {
-            lb3.RandomDoubleArray();
-            lb3.RandomDoubleArray(5, -5, 5);
+            double[] actual;
+
+            actual = lb3.RandomDoubleArray();
+            lb3.PrintArray(actual);
+
+            actual = lb3.RandomDoubleArray(5, -5, 5);
+            lb3.PrintArray(actual);
         }
+
 
         [TestMethod]
         public void Average()
