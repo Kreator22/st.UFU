@@ -74,7 +74,7 @@ namespace _03_Lab
         }
 
         /// <summary>
-        /// Создать метод создающий массив, 
+        /// 2. Создать метод создающий массив, 
         /// заполненный случайными целыми числами в диапазоне от min до max.
         /// </summary>
         static public int[] RandomIntArray(int size = 10, int min = -10, int max = 10)
@@ -97,14 +97,12 @@ namespace _03_Lab
             double[] arr = new double[size];
             Random r = new();
 
-            Array.ForEach(arr, i =>
+            for(int i = 0; i < size; i++)
             {
-                i = r.NextDouble() * (max - min);
-                i += min >= 0 ? -min : min;
-                Console.Write($"{i}, ");
-            });
+                double k = r.NextDouble() * (max - min);
+                k += min >= 0 ? -min : min;
+            }
 
-            Console.WriteLine();
             return arr;
         }
 
