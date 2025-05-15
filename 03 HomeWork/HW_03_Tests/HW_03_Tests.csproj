@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\03 Lab\03 Lab\Lab_03.csproj" />
-    <ProjectReference Include="..\..\HW_03\HW_03.csproj" />
     <ProjectReference Include="..\..\PerfomanceTests\PerfomanceTests.csproj" />
+    <ProjectReference Include="..\HW_03\HW_03.csproj" />
   </ItemGroup>
 
   <ItemGroup>
