@@ -13,15 +13,25 @@ namespace Lab_06_Tests
         [TestMethod]
         public void CreateTheNewFile()
         {
-            string path = Directory.GetCurrentDirectory();
-            path += "\\!TEST.txt";
-            Console.WriteLine("The current directory is {0}", path + Environment.NewLine);
+            string directory = Directory.GetCurrentDirectory();
+            string fileName = "TEST_CreateTheNewFile.txt";
+
+            Console.WriteLine("The current directory is {0}", directory + Environment.NewLine);
 
             int[] values = [1, 2, 3, 16, 32, 65535, 65536, int.MinValue, int.MaxValue];
 
-            LB6.CreateTheNewFile(path, LB6.WriteMode.FileStream, values);
-            LB6.CreateTheNewFile(path, LB6.WriteMode.StreamWriter, values);
-            LB6.CreateTheNewFile(path, LB6.WriteMode.BinaryWriter, values);
+            string path = "";
+            List<string> filesPaths = new();
+
+            path = LB6.CreateTheNewFile(directory, fileName, LB6.WriteMode.FileStream, values);
+            filesPaths.Add(path);
+            path = LB6.CreateTheNewFile(directory, fileName, LB6.WriteMode.StreamWriter, values);
+            filesPaths.Add(path);
+            path = LB6.CreateTheNewFile(Path.Combine(directory, fileName), LB6.WriteMode.BinaryWriter, values);
+            filesPaths.Add(path);
+
+            /*foreach (string _path in filesPaths)
+                File.Delete(_path);*/
         }
 
         [TestMethod]

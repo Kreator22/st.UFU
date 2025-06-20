@@ -142,27 +142,35 @@ namespace Lab_06
         /// static void CreateTheNewFile(string path, params int[] values)
         /// который записывает в файл целых чисел набор значений, перечисленных через запятую.
         /// </summary>
-        public static void CreateTheNewFile(string path, WriteMode readWriteMode, params int[] values)
+        /// <param name="path">Существующая директория для создания файла</param>
+        /// <param name="fileName">Имя для создания файла</param>
+        /// <param name="readWriteMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
+        /// <param name="values">Набор значений для записи в файл</param>
+        public static string CreateTheNewFile
+            (string path, string fileName, WriteMode readWriteMode, params int[] values) =>
+            CreateTheNewFile(Path.Combine(path, fileName), readWriteMode, values);
+
+        /// <summary>
+        /// 1. Создайте метод
+        /// static void CreateTheNewFile(string path, params int[] values)
+        /// который записывает в файл целых чисел набор значений, перечисленных через запятую.
+        /// </summary>
+        /// <param name="path">Существующая директория и имя файла для создания</param>
+        /// <param name="readWriteMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
+        /// <param name="values">Набор значений для записи в файл</param>
+        public static string CreateTheNewFile(string path, WriteMode readWriteMode, params int[] values)
         {
-            string fileName =
+            string? directory = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directory))
+                throw new DirectoryNotFoundException("Неверный путь к директории" + Environment.NewLine + path);
+
+            string writingMethod =
                 readWriteMode == WriteMode.FileStream ? "FS" :
                 readWriteMode == WriteMode.StreamWriter ? "SW" :
                 "BW";
 
-            string pattern = @"([^\\]+)(\.\w{2,3}$)";
-
-            //Путь указан с именем файла
-            if (Regex.IsMatch(path, pattern))
-                path = Regex.Replace(path, pattern, 
-                    m => m.Groups[1].Value + "_" + fileName + m.Groups[2].Value);
-
-            //Путь указан без имени файла, но со слэшем в конце
-            else if (Regex.IsMatch(path, @"\\$"))
-                path += fileName + ".txt";
-
-            //Путь указан без имени файла, без слэша в конце
-            else
-                path += "\\" + fileName + ".txt";
+            //Изменяем имя файла в адресе в соответствии со способом его записи
+            path = Path.Combine(directory, writingMethod + "_" + Path.GetFileName(path)); 
 
             FileStreamOptions options = new();
             options.Share = FileShare.Read;
@@ -206,6 +214,8 @@ namespace Lab_06
                 Console.WriteLine($"Данные записаны с использованием {method} в");
                 Console.WriteLine(path + Environment.NewLine);
             }
+
+            return path;
         }
 
         /// <summary>
@@ -656,7 +666,6 @@ namespace Lab_06
         /// </summary>
         /// <returns>Путь к файлу с результатами</returns>
         public static string Lab_06_15(string path, string subString) =>
-            //Lab_06_1415(path, subString, @"^[a-zA-Zа-яА-Я]*" + subString + @"\b", true);
             Lab_06_1415(path, subString, @"(?:^|\r\n)(\w*ание\b)", true);
 
         /// <summary>
