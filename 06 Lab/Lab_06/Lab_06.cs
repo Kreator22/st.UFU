@@ -189,7 +189,6 @@ namespace Lab_06
                             fs.Write(buffer);
                             fs.Write(delimiter);
                         }
-                    Print("FileStream", path);
                     break;
 
                 case WriteMode.StreamWriter:
@@ -197,7 +196,6 @@ namespace Lab_06
                     using (StreamWriter sw = new(fs, Encoding.Default))
                         foreach (int i in values)
                             sw.Write(i + ", ");
-                    Print("StreamWriter", path);
                     break;
 
                 case WriteMode.BinaryWriter:
@@ -205,22 +203,14 @@ namespace Lab_06
                     using (BinaryWriter bw = new(fs, Encoding.Default))
                         foreach (int i in values)
                             bw.Write(i + ", ");
-                    Print("BinaryWriter", path);
                     break;
             }  
-            
-            static void Print(string method, string path)
-            {
-                Console.WriteLine($"Данные записаны с использованием {method} в");
-                Console.WriteLine(path + Environment.NewLine);
-            }
 
+            Console.WriteLine($"Данные записаны с использованием {writeMode} в");
+            Console.WriteLine(path + Environment.NewLine);
             return path;
         }
 
-
-        /*public static void ReadFile
-            (string path, ReadMode readWriteMode, uint n = 2, string delimiter = ", ")*/
 
         /// <summary>
         /// 2. Создайте метод <br/>
@@ -230,7 +220,28 @@ namespace Lab_06
         /// Для пустого файла выводить сообщение &lt; empty file &gt;.  <br/>
         /// (Используем свойство Length объекта FileStream)
         /// </summary>
-        public static void ReadFile(string path, ReadMode readWriteMode, uint n = 2, string delimiter = ", ")
+        /// <param name="path">Директория</param>
+        /// <param name="fileName">Имя файла</param>
+        /// <param name="readMode">Способ чтения файла. Для FS -> FS, SW -> SR, BW -> BR</param>
+        /// <param name="n">Количество чисел для вывода в каждой строке</param>
+        /// <param name="delimiter">Разделитель между числами при выводе</param>
+        public static void ReadFile
+            (string path, string fileName, ReadMode readMode, uint n = 2, string delimiter = ", ") =>
+            ReadFile(Path.Combine(path, fileName), readMode, n, delimiter);
+
+        /// <summary>
+        /// 2. Создайте метод <br/>
+        /// static void ReadFile(string path, uint n = 10, string delimiter = ", ") <br/>
+        /// который принимает имя файла целых чисел и выводит их на консоль по N чисел в каждой строке
+        /// (значение по умолчанию для N = 10, N &gt; 0).  <br/>
+        /// Для пустого файла выводить сообщение &lt; empty file &gt;.  <br/>
+        /// (Используем свойство Length объекта FileStream) 
+        /// </summary>
+        /// <param name="path">Полный путь к файлу</param>
+        /// <param name="readMode">Способ чтения файла. Для FS -> FS, SW -> SR, BW -> BR</param>
+        /// <param name="n">Количество чисел для вывода в каждой строке</param>
+        /// <param name="delimiter">Разделитель между числами при выводе</param>
+        public static void ReadFile(string path, ReadMode readMode, uint n = 2, string delimiter = ", ")
         {
             if(!File.Exists(path))
             {
@@ -243,7 +254,7 @@ namespace Lab_06
             options.Mode = FileMode.Open;
             options.Access = FileAccess.Read;
 
-            switch (readWriteMode)
+            switch (readMode)
             {
                 case ReadMode.FileStream:
                     using (FileStream fs = new(path, FileMode.Open))
