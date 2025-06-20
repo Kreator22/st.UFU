@@ -670,7 +670,7 @@ namespace Lab_06
         /// </summary>
         /// <returns>Путь к файлу с результатами</returns>
         public static string Lab_06_15(string path, string subString) =>
-            Lab_06_1415(path, subString, @"(?:^|\r\n)(\w*ание\b)", true);
+            Lab_06_1415(path, subString, @"(?:^|\r\n)(\w*" + subString + @"\b)", true);
 
         /// <summary>
         /// Общее решение для 14 и 15 заданий
