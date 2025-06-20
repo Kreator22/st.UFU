@@ -144,11 +144,11 @@ namespace Lab_06
         /// </summary>
         /// <param name="path">Существующая директория для создания файла</param>
         /// <param name="fileName">Имя для создания файла</param>
-        /// <param name="readWriteMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
+        /// <param name="writeMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
         /// <param name="values">Набор значений для записи в файл</param>
         public static string CreateTheNewFile
-            (string path, string fileName, WriteMode readWriteMode, params int[] values) =>
-            CreateTheNewFile(Path.Combine(path, fileName), readWriteMode, values);
+            (string path, string fileName, WriteMode writeMode, params int[] values) =>
+            CreateTheNewFile(Path.Combine(path, fileName), writeMode, values);
 
         /// <summary>
         /// 1. Создайте метод
@@ -156,17 +156,17 @@ namespace Lab_06
         /// который записывает в файл целых чисел набор значений, перечисленных через запятую.
         /// </summary>
         /// <param name="path">Существующая директория и имя файла для создания</param>
-        /// <param name="readWriteMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
+        /// <param name="writeMode">Способ создания файла. В зависимости от способа имя файла будет изменено</param>
         /// <param name="values">Набор значений для записи в файл</param>
-        public static string CreateTheNewFile(string path, WriteMode readWriteMode, params int[] values)
+        public static string CreateTheNewFile(string path, WriteMode writeMode, params int[] values)
         {
             string? directory = Path.GetDirectoryName(path);
             if (!Directory.Exists(directory))
                 throw new DirectoryNotFoundException("Неверный путь к директории" + Environment.NewLine + path);
 
             string writingMethod =
-                readWriteMode == WriteMode.FileStream ? "FS" :
-                readWriteMode == WriteMode.StreamWriter ? "SW" :
+                writeMode == WriteMode.FileStream ? "FS" :
+                writeMode == WriteMode.StreamWriter ? "SW" :
                 "BW";
 
             //Изменяем имя файла в адресе в соответствии со способом его записи
@@ -177,7 +177,7 @@ namespace Lab_06
             options.Mode = FileMode.Append;
             options.Access = FileAccess.Write;
 
-            switch (readWriteMode)
+            switch (writeMode)
             {
                 case WriteMode.FileStream:
                     using (FileStream fs = new(path, FileMode.Append))
@@ -217,6 +217,10 @@ namespace Lab_06
 
             return path;
         }
+
+
+        /*public static void ReadFile
+            (string path, ReadMode readWriteMode, uint n = 2, string delimiter = ", ")*/
 
         /// <summary>
         /// 2. Создайте метод <br/>
