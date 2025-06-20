@@ -39,9 +39,9 @@ namespace Lab_06_Tests
         {
             string path = Directory.GetCurrentDirectory();
 
-            string path_FS = Directory.GetFiles(path, "*_FS.txt").First();
-            string path_SR = Directory.GetFiles(path, "*_SW.txt").First();
-            string path_BR = Directory.GetFiles(path, "*_BW.txt").First();
+            string path_FS = Directory.GetFiles(path, "FS_*.txt").First();
+            string path_SR = Directory.GetFiles(path, "SW_*.txt").First();
+            string path_BR = Directory.GetFiles(path, "BW_*.txt").First();
 
            LB6.ReadFile(path_FS, LB6.ReadMode.FileStream);
            LB6.ReadFile(path_SR, LB6.ReadMode.StreamReader);

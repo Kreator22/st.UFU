@@ -253,6 +253,8 @@ namespace Lab_06
             options.Mode = FileMode.Open;
             options.Access = FileAccess.Read;
 
+            List<int> nums = new();
+
             using (FileStream fs = new(path, FileMode.Open)) 
             {
                 if (fs.Length == 0)
@@ -268,19 +270,19 @@ namespace Lab_06
                             byte[] buffer = new byte[fs.Length];
                             fs.Read(buffer);
 
-                            List<int> nums = new((int)fs.Length / 6);
+                            //Здесь можно заранее определить кол-во элементов в nums
+                            //На больших файлах получим прирост производительности?
+                            nums = new((int)fs.Length / 6);
 
                             for (int i = 0; i < fs.Length; i += 6)
                                 nums.Add(BitConverter.ToInt32(buffer, i));
-
-                            Print(nums);
                         }
                         break;
 
                     case ReadMode.StreamReader:
                         using (StreamReader sr = new(fs, Encoding.Default))
                         {
-                            List<int> nums =
+                            nums =
                                 sr.ReadToEnd()
                                 .Split(", ")
                                 .Select(n => {
@@ -290,8 +292,6 @@ namespace Lab_06
                                 .Where(pair => pair.valid == true)
                                 .Select(pair => pair.result)
                                 .ToList();
-
-                            Print(nums);
                         }
                         break;
 
@@ -303,105 +303,31 @@ namespace Lab_06
                             while (br.PeekChar() != -1)
                                 strings.Add(br.ReadString().TrimEnd(new[] { ' ', ',' }));
 
-                            List<int> nums = strings
+                            nums = strings
                                 .Select(s => int.Parse(s))
                                 .ToList();
-
-                            Print(nums);
                         }
                         break;
                 }
             }
-                
 
-            /*switch (readMode)
+            Console.WriteLine($"Данные прочитаны с использованием {readMode} из");
+            Console.WriteLine(path);
+
+            int k = 0;
+            StringBuilder sb = new();
+
+            foreach (int num in nums)
             {
-                case ReadMode.FileStream:
-                    using (FileStream fs = new(path, FileMode.Open))
-                    {
-                        if(fs.Length == 0)
-                        {
-                            Console.WriteLine("<Empty file>");
-                            break;
-                        }
-
-                        byte[] buffer = new byte[fs.Length];
-                        fs.Read(buffer);
-
-                        List<int> nums = new((int)fs.Length / 6);
-
-                        for (int i = 0; i < fs.Length; i += 6)
-                            nums.Add(BitConverter.ToInt32(buffer, i));
-
-                        Print(nums);
-                    }
-                    break;
-
-                case ReadMode.StreamReader:
-                    using(FileStream fs = new(path, options))
-                    using(StreamReader sr = new(fs, Encoding.Default))
-                    {
-                        if (fs.Length == 0)
-                        {
-                            Console.WriteLine("<Empty file>");
-                            break;
-                        }
-
-                        List<int> nums = 
-                            sr.ReadToEnd()
-                            .Split(", ")
-                            .Select(n => {
-                                int result;
-                                return new { valid = int.TryParse(n, out result), result };
-                                })
-                            .Where(pair => pair.valid == true)
-                            .Select(pair => pair.result)
-                            .ToList();
-
-                        Print(nums);
-                    }
-                    break;
-
-
-                case ReadMode.BinaryReader:
-                    using (FileStream fs = new(path, options))
-                    using(BinaryReader br = new(fs, Encoding.Default))
-                    {
-                        if (fs.Length == 0)
-                        {
-                            Console.WriteLine("<Empty file>");
-                            break;
-                        }
-
-                        List<string> strings = new();
-
-                        while (br.PeekChar() != -1)
-                            strings.Add(br.ReadString().TrimEnd(new[] {' ', ','}) );
-
-                        List<int> nums = strings
-                            .Select(s => int.Parse(s))
-                            .ToList();
-
-                        Print(nums);
-                    }
-                    break;
-            }*/
-
-            void Print(IEnumerable<int> nums)
-            {
-                Console.WriteLine($"Данные прочитаны с использованием {readMode} из");
-                Console.WriteLine(path);
-
-                int i = 0;
-                foreach (int num in nums)
-                {
-                    Console.Write(num + delimiter);
-                    if ((i + 1) % n == 0)
-                        Console.Write(Environment.NewLine);
-                    i++;
-                }
-                Console.WriteLine();
+                sb.Append(num + delimiter);
+                if ((k + 1) % n == 0)
+                    sb.Append(Environment.NewLine);
+                k++;
             }
+
+            Console.WriteLine(
+                sb.ToString().Remove(sb.Length - delimiter.Length) 
+                + Environment.NewLine);
         }
 
 
