@@ -463,7 +463,7 @@ namespace Lab_06_Tests
                 filesPaths.Add(LB6.Lab_06_14(filePath, i));
             filesPaths.Add(LB6.Lab_06_15(filePath, "ание"));
 
-            Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "input-files"), true);
+           Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "input-files"), true);
         }
     }
 }
