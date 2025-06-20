@@ -117,7 +117,6 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-//using File = System.IO.File;
 
 namespace Lab_06
 {
@@ -254,7 +253,68 @@ namespace Lab_06
             options.Mode = FileMode.Open;
             options.Access = FileAccess.Read;
 
-            switch (readMode)
+            using (FileStream fs = new(path, FileMode.Open)) 
+            {
+                if (fs.Length == 0)
+                {
+                    Console.WriteLine("<Empty file>");
+                    return;
+                }
+
+                switch (readMode)
+                {
+                    case ReadMode.FileStream:
+                        {
+                            byte[] buffer = new byte[fs.Length];
+                            fs.Read(buffer);
+
+                            List<int> nums = new((int)fs.Length / 6);
+
+                            for (int i = 0; i < fs.Length; i += 6)
+                                nums.Add(BitConverter.ToInt32(buffer, i));
+
+                            Print(nums);
+                        }
+                        break;
+
+                    case ReadMode.StreamReader:
+                        using (StreamReader sr = new(fs, Encoding.Default))
+                        {
+                            List<int> nums =
+                                sr.ReadToEnd()
+                                .Split(", ")
+                                .Select(n => {
+                                    int result;
+                                    return new { valid = int.TryParse(n, out result), result };
+                                })
+                                .Where(pair => pair.valid == true)
+                                .Select(pair => pair.result)
+                                .ToList();
+
+                            Print(nums);
+                        }
+                        break;
+
+                    case ReadMode.BinaryReader:
+                        using (BinaryReader br = new(fs, Encoding.Default))
+                        {
+                            List<string> strings = new();
+
+                            while (br.PeekChar() != -1)
+                                strings.Add(br.ReadString().TrimEnd(new[] { ' ', ',' }));
+
+                            List<int> nums = strings
+                                .Select(s => int.Parse(s))
+                                .ToList();
+
+                            Print(nums);
+                        }
+                        break;
+                }
+            }
+                
+
+            /*switch (readMode)
             {
                 case ReadMode.FileStream:
                     using (FileStream fs = new(path, FileMode.Open))
@@ -273,7 +333,7 @@ namespace Lab_06
                         for (int i = 0; i < fs.Length; i += 6)
                             nums.Add(BitConverter.ToInt32(buffer, i));
 
-                        Print(nums, n, delimiter, "FileStream", path);
+                        Print(nums);
                     }
                     break;
 
@@ -298,7 +358,7 @@ namespace Lab_06
                             .Select(pair => pair.result)
                             .ToList();
 
-                        Print(nums, n, delimiter, "StreamReader", path);
+                        Print(nums);
                     }
                     break;
 
@@ -322,14 +382,14 @@ namespace Lab_06
                             .Select(s => int.Parse(s))
                             .ToList();
 
-                        Print(nums, n, delimiter, "BinaryReader", path);
+                        Print(nums);
                     }
                     break;
-            }
+            }*/
 
-            static void Print(IEnumerable<int> nums, uint n, string delimiter, string method, string path)
+            void Print(IEnumerable<int> nums)
             {
-                Console.WriteLine($"Данные прочитаны с использованием {method} из");
+                Console.WriteLine($"Данные прочитаны с использованием {readMode} из");
                 Console.WriteLine(path);
 
                 int i = 0;
