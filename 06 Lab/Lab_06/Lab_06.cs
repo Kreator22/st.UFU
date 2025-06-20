@@ -136,6 +136,12 @@ namespace Lab_06
             BinaryReader
         }
 
+        static void CheckFilePath(string path)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("Неверный путь к файлу", path);
+        }
+
         /// <summary>
         /// 1. Создайте метод
         /// static void CreateTheNewFile(string path, params int[] values)
@@ -242,11 +248,7 @@ namespace Lab_06
         /// <param name="delimiter">Разделитель между числами при выводе</param>
         public static void ReadFile(string path, ReadMode readMode, uint n = 2, string delimiter = ", ")
         {
-            if(!File.Exists(path))
-            {
-                Console.WriteLine("Файл не найден");
-                return;
-            }
+            CheckFilePath(path);
 
             FileStreamOptions options = new();
             options.Share = FileShare.Read;
@@ -330,7 +332,6 @@ namespace Lab_06
                 + Environment.NewLine);
         }
 
-
         /// <summary>
         /// 3. Дан бинарный файл целых чисел. 
         /// Обнулить его минимальный элемент(считать, что в файле он единственный). 
@@ -338,8 +339,7 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_03(string path)
         {
-            if (!File.Exists(path))
-                Console.WriteLine("Файл не найден" + Environment.NewLine + path);
+            CheckFilePath(path);
 
             using (FileStream fs = new(path, FileMode.Open, FileAccess.ReadWrite))
             {
@@ -371,11 +371,9 @@ namespace Lab_06
         /// Тестирование.В основной программе явно создайте и обработайте четыре файла
         /// (обязательно проверить пустой и файл из одного элемента).
         /// </summary>
-        /// <param name="path"></param>
         public static void Lab_06_04(string path)
         {
-            if (!File.Exists(path))
-                Console.WriteLine("Файл не найден" + Environment.NewLine + path);
+            CheckFilePath(path);
 
             using (FileStream fs = new(path, FileMode.Open, FileAccess.ReadWrite))
             {
@@ -403,8 +401,7 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_05(string path)
         {
-            if (!File.Exists(path))
-                Console.WriteLine("Файл не найден" + Environment.NewLine + path);
+            CheckFilePath(path);
 
             using (FileStream fs = new(path, FileMode.Open, FileAccess.ReadWrite))
             {
@@ -433,8 +430,7 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_06(string path)
         {
-            if (!File.Exists(path))
-                Console.WriteLine("Файл не найден" + Environment.NewLine + path);
+            CheckFilePath(path);
 
             using (FileStream fs = new(path, FileMode.Open, FileAccess.ReadWrite))
             {
@@ -473,6 +469,8 @@ namespace Lab_06
         /// <returns>Количество символов в файле</returns>
         public static int Lab_06_07(string path)
         {
+            CheckFilePath(path);
+
             int i = 0;
             foreach(string str in Stream_WR.StreamReader(path))
                 foreach(char c in str)
@@ -491,6 +489,8 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_08(string path, int n, char c)
         {
+            CheckFilePath(path);
+
             List<string> strings = new();
 
             for(int i = 1; i <= n; i++)
@@ -505,8 +505,8 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_09(string path_1, string path_2)
         {
-            if (!File.Exists(path_1) || !File.Exists(path_2))
-                Console.WriteLine("Неверный путь к файлу");
+            CheckFilePath(path_1);
+            CheckFilePath(path_2);
 
             using (StreamReader sr = new(path_2))
             using (StreamWriter sw = new(path_1, true))
@@ -521,6 +521,8 @@ namespace Lab_06
         /// </summary>
         public static void Lab_06_10(string path)
         {
+            CheckFilePath(path);
+
             string path_2 = Path.GetTempFileName();
             Console.WriteLine("Создан временный файл" + Environment.NewLine + path_2);
             File.Copy(path, path_2, true);
@@ -547,6 +549,8 @@ namespace Lab_06
         /// </summary>
         public static int Lab_06_11(string path)
         {
+            CheckFilePath(path);
+
             int i = 0;
             foreach (string str in File.ReadLines(path))
                 if (str != String.Empty)
@@ -566,8 +570,7 @@ namespace Lab_06
         /// </summary>
         public static int[] Lab_06_12(string path)
         {
-            if (!File.Exists(path))
-                throw new FileNotFoundException("Неверный путь к файлу", path);
+            CheckFilePath(path);
 
             List<List<int>> values;
             List<string> title;
@@ -678,8 +681,7 @@ namespace Lab_06
         /// <returns>Путь к файлу с результатами</returns>
         static string Lab_06_1415(string path, string new_file_prefix, string pattern, bool join_words = false, char separator = ' ')
         {
-            if (!File.Exists(path))
-                throw new FileNotFoundException("Неверный путь к файлу", path);
+            CheckFilePath(path);
 
             var words = Regex.Matches(File.ReadAllText(path), pattern).Select(m => m.Value.Trim('\r', '\n'));
 
