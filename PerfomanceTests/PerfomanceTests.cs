@@ -93,8 +93,22 @@ namespace PerfomanceTests
 
         internal void PrintResult()
         {
+            double time = sw.ElapsedMilliseconds;
+            string timePrefix;
+
+            switch(sw.ElapsedMilliseconds)
+            { 
+                case >= 1000 and < 60000:
+                    timePrefix = "";
+                    time /= 1000;
+                    break;
+                default:
+                    timePrefix = "милли";
+                    break;
+            }
+
             Console.WriteLine($"Время выполнения операции {sw.ElapsedTicks} тактов");
-            Console.WriteLine($"Время выполнения операции {sw.ElapsedMilliseconds} миллисекунд");
+            Console.WriteLine($"Время выполнения операции {time} {timePrefix}секунд");
 
             string postfix = "b";
             long divider = 1;
