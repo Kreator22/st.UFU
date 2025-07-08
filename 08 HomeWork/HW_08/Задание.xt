@@ -1,0 +1,41 @@
+ƒомашнее задание #8
+https://edu.mmcs.sfedu.ru/mod/assign/view.php?id=19182
+
+—ериализаци€
+
+—ериализаци€ представл€ет процесс преобразовани€ какого-либо объекта в поток байтов. 
+ѕосле преобразовани€ мы можем этот поток байтов или записать на диск или сохранить его временно в пам€ти.
+ј при необходимости можно выполнить обратный процесс - десериализацию, 
+то есть получить из потока байтов ранее сохраненный объект.
+
+«адача:
+
+¬ проекте лабораторной #9 создать новые методы
+
+static void SerializeBinary(ProductDatabase productDatabase, string path)
+static ProductDatabase DeserializeBinary(string path)
+static void SerializeSoap(ProductDatabase productDatabase, string path)
+static ProductDatabase DeserializeSoap(string path)
+static void SerializeXML(ProductDatabase productDatabase, string path)
+static ProductDatabase DeserializeXML(string path)
+которые осуществл€ют сериализацию/десериализацию объекта типа ProductDatabase в следующих форматах:
+
+
+бинарный
+SOAP
+xml
+
+ƒобавить в классы нужные атрибуты и изменить их таким образом, чтобы сделать сериализацию возможной. 
+¬оспользуйтесь материалами по следующей ссылке.
+
+----------------
+
+бинарный - запрещен Microsoft
+xml - сделал
+SOAP = XML с дополнительными ограничени€ми/настройками.
+ƒл€ реализации нужно использовать XmlSerializer, а не DataContractSerializer.
+(https://learn.microsoft.com/ru-ru/dotnet/framework/wcf/feature-details/using-the-xmlserializer-class
+"ѕри создании служб, которые соответствуют устаревшей стандарту кодировани€ SOAP")
+XmlSerializer не умеет сериализовывать IDictionary, нужно писать или копировать чужую обЄртку дл€ словарей.
+ѕосле этого надо разбиратьс€, чем именно SOAP отличаетс€ от обычного XML.
+ћноговато телодвижений, возможно вернусь к этому заданию позже.
