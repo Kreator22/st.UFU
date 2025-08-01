@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Lab_12.Model
 {
     public class DichotomiaFactory() : 
-        SolverFactory("Dichotomia", "Метод половинного деления")
+        AbstractSolverFactory("Dichotomia", "Метод половинного деления")
     {
         public override IEquationSolver CreateSolver(
             Func<double, double> equation, 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab_12.Model.Solver_Factories
 {
-    public abstract class SolverFactory(string solverName, string solverDescription) : ISolverFactory
+    public abstract class AbstractSolverFactory(string solverName, string solverDescription) : ISolverFactory
     {
         public string SolverName { get; } = solverName;
 

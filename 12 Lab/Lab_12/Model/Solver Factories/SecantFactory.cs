@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab_12.Model
 {
-    class SecantFactory() : SolverFactory("Secant", "Метод хорд")
+    class SecantFactory() : AbstractSolverFactory("Secant", "Метод хорд")
     {
         public override IEquationSolver CreateSolver(
             Func<double, double> equation,
