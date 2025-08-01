@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lab_12.Model.Solver_Factories
 {
-    class SolverFactoryComparer : IEqualityComparer<ISolverFactory>
+    public class SolverFactoryComparer : IEqualityComparer<ISolverFactory>
     {
         public bool Equals(ISolverFactory? x, ISolverFactory? y) =>
             x is not null &&
