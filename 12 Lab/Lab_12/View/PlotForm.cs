@@ -59,8 +59,6 @@ namespace Lab_12
 
         private void SolveMethod_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //userInput.SolverMethod = (string)SolveMethod.SelectedValue;
-
             object? value = SolveMethod.SelectedValue;
             if (value is not null)
                 userInput.SolverMethod = value.ToString()!;
@@ -82,7 +80,14 @@ namespace Lab_12
         private void epsilon_TextChanged(object sender, EventArgs e) =>
             userInput.Epsilon = epsilon.Text;
 
-        private void SolveTheEquation_Click(object sender, EventArgs e) =>
+        private void SolveTheEquation_Click(object sender, EventArgs e)
+        {
+            //Значение Epsilon по умолчанию не будет обработано событием epsilon_TextChanged
+            //если пользователь не захочет его изменять
+            userInput.Epsilon = epsilon.Text;
             SolveTheEquation(this, userInput);
+        }
+            
+            
     }
 }
