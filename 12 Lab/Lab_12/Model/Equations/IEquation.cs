@@ -10,6 +10,6 @@ namespace Lab_12.Model.Equations
     {
         string Name { get; }
         string Description { get; }
-        delegate double Equation(double x);
+        Func<double, double> F_x { get; }
     }
 }

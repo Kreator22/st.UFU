@@ -25,5 +25,5 @@ namespace Lab_12.Model.Equations
             [.. equations];
     }
 
-    public record Equation(string Name, string Description, Func<double, double> Func) : IEquation;
+    public record Equation(string Name, string Description, Func<double, double> F_x) : IEquation;
 }
