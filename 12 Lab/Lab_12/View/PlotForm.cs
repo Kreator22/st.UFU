@@ -87,7 +87,8 @@ namespace Lab_12
             userInput.Epsilon = epsilon.Text;
             SolveTheEquation(this, userInput);
         }
-            
-            
+
+        public void ShowError(string errorText, string errorCaption = "Îøèáêà") =>
+            MessageBox.Show(errorText, errorCaption);
     }
 }

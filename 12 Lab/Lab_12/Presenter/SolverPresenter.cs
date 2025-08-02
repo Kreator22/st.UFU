@@ -86,7 +86,7 @@ namespace Lab_12.Presenter
         /// <summary>
         /// Парсит данные пользователя. <br/>
         /// При успехе создаёт экземпляр <see cref="IEquationSolver"/> для класса. <br/>
-        /// При ошибке вызывает <see cref="ShowError"/> с ошибками для всех полей <see cref="PlotUserInput"/>
+        /// При ошибке вызывает <see cref="ShowError"/> с ошибками для всех ошибочных полей <see cref="PlotUserInput"/>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="userInput">Данные введенные пользователем</param>
@@ -149,10 +149,8 @@ namespace Lab_12.Presenter
         /// </summary>
         /// <param name="errorText">Текст ошибки</param>
         /// <param name="errorCaption">Заголовок окна ошибки</param>
-        private void ShowError(string errorText, string errorCaption = "Ошибка")
-        {
-
-        }
+        private void ShowError(string errorText, string errorCaption = "Ошибка") =>
+            PlotFormView.ShowError(errorText, errorCaption);
 
         /// <summary>
         /// Вывести результат в View
