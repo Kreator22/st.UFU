@@ -20,7 +20,6 @@ namespace Lab_12
             presentor.AddSolverFactories(new DichotomiaFactory(), new SecantFactory());
             presentor.AddEquations(new EquationsFabric().GetEquations());
             presentor.Run();
-
         }
     }
 }

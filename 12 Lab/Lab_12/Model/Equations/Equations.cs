@@ -7,6 +7,9 @@ using static Lab_12.Model.Equations.IEquation;
 
 namespace Lab_12.Model.Equations
 {
+    /// <summary>
+    /// Фабрика уравнений <see cref="IEquation"/>
+    /// </summary>
     public class EquationsFabric
     {
         private List<IEquation> equations;

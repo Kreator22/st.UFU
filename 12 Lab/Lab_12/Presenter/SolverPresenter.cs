@@ -1,6 +1,7 @@
 ﻿using Lab_12.Model;
 using Lab_12.Model.Equations;
 using Lab_12.Model.Solver_Factories;
+using Lab_12.Model.Solvers;
 using Lab_12.View;
 using System;
 using System.Collections.Generic;
@@ -13,21 +14,35 @@ using System.Threading.Tasks;
 namespace Lab_12.Presenter
 {
     /// <summary>
-    /// Класс (presentor/представитель) связывающий воедино варианты решений уравнений (model/модель) 
-    /// и пользовательский интерфейс (view/представление) согласно модели MVP 
+    /// Класс (presentor/представитель) связывающий воедино 
+    /// уравнения + варианты их решений (model/модель) 
+    /// и пользовательский интерфейс (view/представление) 
+    /// согласно модели MVP 
     /// </summary>
     class SolverPresenter : IPresentor
     {
+        /// <summary>
+        /// Ссылка на view/представление
+        /// </summary>
         private IPlotFormView PlotFormView;
-        //Фабрики решений
+
+        /// <summary>
+        /// Фабрики решений
+        /// </summary>
         private List<ISolverFactory> solverFactories;
-        //Уравнения для решения
+
+        /// <summary>
+        /// Уравнения для решения
+        /// </summary>
         private List<IEquation> equations;
-        //Решение
+
+        /// <summary>
+        /// Решатель уравнения
+        /// </summary>
         private IEquationSolver solver;
 
         /// <summary>
-        /// 
+        /// Конструктор представителя
         /// </summary>
         /// <param name="plotFormView"></param>
         /// <remarks>
@@ -46,6 +61,7 @@ namespace Lab_12.Presenter
             equations = [];
 
             plotFormView.SolveTheEquation += Solve;
+            plotFormView.PlotResults += PlotResult;
         }
 
         #region Регистрация фабрик решений
@@ -85,8 +101,8 @@ namespace Lab_12.Presenter
 
         /// <summary>
         /// Парсит данные пользователя. <br/>
-        /// При успехе создаёт экземпляр <see cref="IEquationSolver"/> для класса. <br/>
-        /// При ошибке вызывает <see cref="ShowError"/> с ошибками для всех ошибочных полей <see cref="PlotUserInput"/>
+        /// При успехе создаёт экземпляр решателя <see cref="IEquationSolver"/> для представителя. <br/>
+        /// При ошибке вызывает <see cref="ShowError"/> с ошибками для всех ошибочных полей полученных от пользователя данных <see cref="PlotUserInput"/>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="userInput">Данные введенные пользователем</param>
@@ -114,14 +130,14 @@ namespace Lab_12.Presenter
             }
 
             double leftBoundary;
-            if(!double.TryParse(userInput.LeftBoundary, out leftBoundary))
+            if(!double.TryParse(userInput.LeftBoundary, CultureInfo.InvariantCulture, out leftBoundary))
             {
                 errorFlag = true;
                 error.Append($"Не удалось преобразовать в число левую границу {userInput.LeftBoundary}" + Environment.NewLine);
             }
 
             double rightBoundary;
-            if(!double.TryParse(userInput.RightBoundary, out rightBoundary))
+            if(!double.TryParse(userInput.RightBoundary, CultureInfo.InvariantCulture, out rightBoundary))
             {
                 errorFlag = true;
                 error.Append($"Не удалось преобразовать в число правую границу {userInput.RightBoundary}" + Environment.NewLine);
@@ -138,10 +154,27 @@ namespace Lab_12.Presenter
                 ShowError(error.ToString());
             else
             {
-                solver = solverFactory!
+                try
+                {
+                    solver = solverFactory!
                     .CreateSolver(equation!.F_x, leftBoundary, rightBoundary, epsilon);
-                PlotResult();
+
+                    solver.SolveTheEquation();
+                    PrintResult();
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex.Message);
+                }
             }
+        }
+
+        private void PlotResult(object? sender, EventArgs e)
+        {
+            if(solver is null || solver.Iterations < 1)
+                ShowError("Уравнение еще не решено");
+            else
+                PlotResult();
         }
 
         /// <summary>
@@ -153,14 +186,26 @@ namespace Lab_12.Presenter
             PlotFormView.ShowError(errorText, errorCaption);
 
         /// <summary>
-        /// Вывести результат в View
+        /// Вывести результаты в View (в виде текста)
+        /// </summary>
+        private void PrintResult() =>
+            PlotFormView.PrintSolution(solver.C, solver.Iterations);
+        
+        /// <summary>
+        /// Вывести результат в View (графически)
         /// </summary>
         private void PlotResult()
         {
+            ISolution solution = (ISolution)solver;
 
+            PlotFormView.PlotGraph(solution
+                .GetGraphPoints()
+                .Select(point => (point.X, point.Y)));
+
+            PlotFormView.PlotSolution(solution
+                .GetSolutionPoints()
+                .Select(el => (el.point.X, el.point.Y, el.number)));            
         }
-
-
 
         public void Run()
         {
@@ -170,7 +215,7 @@ namespace Lab_12.Presenter
                 .Select(s => (s.SolverName, s.SolverDescription))
                 .ToList());
 
-            //Отправляем в форму зарегистрированные виду уравнений
+            //Отправляем в форму зарегистрированные виды уравнений
             PlotFormView.AddEquations(
                 equations
                 .Select(eq => (eq.Name, eq.Description))

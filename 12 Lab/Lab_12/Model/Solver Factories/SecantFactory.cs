@@ -1,4 +1,5 @@
 ﻿using Lab_12.Model.Solver_Factories;
+using Lab_12.Model.Solvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace Lab_12.Model
             double a,
             double b,
             double epsilon = 1E-07) =>
-            new Dichotomia(equation, a, b, epsilon);
+            new Secant(equation, a, b, epsilon);
     }
 }

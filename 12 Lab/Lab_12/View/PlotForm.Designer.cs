@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             lbl_leftBoundary = new Label();
             lbl_rightBoundary = new Label();
             leftBoundary = new TextBox();
@@ -39,14 +41,15 @@
             solution = new TextBox();
             label5 = new Label();
             iterations = new TextBox();
-            button2 = new Button();
+            PlotTheEquation_btn = new Button();
             SolveMethod = new ComboBox();
             lbl_SolveMethod = new Label();
             panel1 = new Panel();
             Equation = new ComboBox();
             label1 = new Label();
-            LBL = new Label();
+            Plot = new System.Windows.Forms.DataVisualization.Charting.Chart();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Plot).BeginInit();
             SuspendLayout();
             // 
             // lbl_leftBoundary
@@ -109,7 +112,7 @@
             SolveTheEquation_btn.TabIndex = 6;
             SolveTheEquation_btn.Text = "Решить уравнение";
             SolveTheEquation_btn.UseVisualStyleBackColor = true;
-            SolveTheEquation_btn.Click += SolveTheEquation_Click;
+            SolveTheEquation_btn.Click += SolveTheEquation_btn_Click;
             // 
             // label4
             // 
@@ -145,14 +148,15 @@
             iterations.Size = new Size(181, 27);
             iterations.TabIndex = 10;
             // 
-            // button2
+            // PlotTheEquation_btn
             // 
-            button2.Location = new Point(11, 448);
-            button2.Name = "button2";
-            button2.Size = new Size(181, 29);
-            button2.TabIndex = 11;
-            button2.Text = "Построить график";
-            button2.UseVisualStyleBackColor = true;
+            PlotTheEquation_btn.Location = new Point(11, 448);
+            PlotTheEquation_btn.Name = "PlotTheEquation_btn";
+            PlotTheEquation_btn.Size = new Size(181, 29);
+            PlotTheEquation_btn.TabIndex = 11;
+            PlotTheEquation_btn.Text = "Построить график";
+            PlotTheEquation_btn.UseVisualStyleBackColor = true;
+            PlotTheEquation_btn.Click += PlotTheEquation_btn_Click;
             // 
             // SolveMethod
             // 
@@ -179,7 +183,7 @@
             // 
             panel1.Controls.Add(Equation);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(button2);
+            panel1.Controls.Add(PlotTheEquation_btn);
             panel1.Controls.Add(lbl_SolveMethod);
             panel1.Controls.Add(lbl_leftBoundary);
             panel1.Controls.Add(SolveMethod);
@@ -217,28 +221,32 @@
             label1.TabIndex = 14;
             label1.Text = "Уравнение для решения";
             // 
-            // LBL
+            // Plot
             // 
-            LBL.AutoSize = true;
-            LBL.Location = new Point(250, 48);
-            LBL.Name = "LBL";
-            LBL.Size = new Size(50, 20);
-            LBL.TabIndex = 15;
-            LBL.Text = "label2";
+            Plot.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            chartArea1.Name = "ChartArea1";
+            Plot.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            Plot.Legends.Add(legend1);
+            Plot.Location = new Point(223, 12);
+            Plot.Name = "Plot";
+            Plot.Size = new Size(565, 477);
+            Plot.TabIndex = 16;
+            Plot.Text = "chart1";
             // 
             // PlotForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 501);
-            Controls.Add(LBL);
+            Controls.Add(Plot);
             Controls.Add(panel1);
             Name = "PlotForm";
             Text = "Form1";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Plot).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -254,12 +262,12 @@
         private TextBox solution;
         private Label label5;
         private TextBox iterations;
-        private Button button2;
+        private Button PlotTheEquation_btn;
         private ComboBox SolveMethod;
         private Label lbl_SolveMethod;
         private Panel panel1;
         private ComboBox Equation;
         private Label label1;
-        private Label LBL;
+        private System.Windows.Forms.DataVisualization.Charting.Chart Plot;
     }
 }
